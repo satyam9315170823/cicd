@@ -1,6 +1,6 @@
 
 
-name: Deploy to aws ec2
+name: Deploy to aws ec2 instance
 
 on:
   push:

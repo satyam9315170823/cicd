@@ -1,6 +1,4 @@
-
-
-name: Deploy to aws ec2 instance
+name: Deploy to EC2
 
 on:
   push:
@@ -16,7 +14,7 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
-      - name: executing remote ssh commands using password
+      - name: Deploy and run app with PM2
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: 51.21.196.192
@@ -24,8 +22,29 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           port: 22
           script: |
-            cd cicd
+            # Go to project directory (adjust if different)
+            cd ~/cicd
+
+            # Pull latest code
             git pull origin main
+
+            # Install dependencies
             npm install
+
+            # Build the project
             npm run build
-            npm run start
+
+            # Install PM2 if not installed
+            if ! command -v pm2 &> /dev/null
+            then
+              npm install -g pm2
+            fi
+
+            # Stop existing app if running
+            pm2 delete cicd || true
+
+            # Start app using PM2
+            pm2 start npm --name cicd -- run start
+
+            # Save the process list to auto-start on reboot
+            pm2 save

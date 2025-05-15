@@ -1,3 +1,5 @@
+
+
 name: Deploy to EC2
 
 on:
@@ -7,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    name: Push to EC2 instance
+    name: Push to EC2
     runs-on: ubuntu-latest
 
     steps:
@@ -22,4 +24,3 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           port: 22
           script: ./deploy.sh
-

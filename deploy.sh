@@ -1,4 +1,4 @@
-cd 100xdevs-ci-cd
+cd cicd
 git pull origin main
 npm install
 npm run build
